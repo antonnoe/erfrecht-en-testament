@@ -3,120 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erfrecht Gids Frankrijk</title>
+    <title>Erfrechtgids Frankrijk</title>
     <style>
-        /* --- STYLING (Modern & Schoon) --- */
+        /* --- STYLING (Zakelijk & Correct) --- */
         :root {
             --primary: #800000; /* Bordeaux Rood */
-            --primary-dark: #5c0000;
-            --secondary: #2c3e50; /* Donkerblauw */
+            --secondary: #333333; /* Donkergrijs/Zwart */
             --bg-light: #f9f9f9;
             --text: #333;
-            --success: #27ae60;
-            --alert: #c0392b;
-            --info: #2980b9;
+            --border: #e0e0e0;
+            --link-color: #800000;
         }
 
         body {
             font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
-            background-color: transparent; /* Belangrijk voor iframe */
+            background-color: transparent;
             color: var(--text);
             margin: 0;
             padding: 10px;
+            line-height: 1.6;
         }
 
         .container {
             max-width: 900px;
             margin: 0 auto;
             background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            overflow: hidden;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border);
+            border-radius: 4px; /* Iets strakker */
         }
 
         /* HEADER */
         .header {
             background: var(--primary);
             color: white;
-            padding: 25px;
-            text-align: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid #5c0000;
         }
-        .header h1 { margin: 0; font-size: 1.5rem; font-weight: 600; }
+        .header h1 { margin: 0; font-size: 1.4rem; font-weight: 600; }
         .header p { margin: 5px 0 0; opacity: 0.9; font-size: 0.95rem; }
 
         /* TABS NAVIGATIE */
         .tabs {
             display: flex;
             flex-wrap: wrap;
-            background: #f1f1f1;
-            border-bottom: 2px solid var(--primary);
+            background: #f4f4f4;
+            border-bottom: 1px solid var(--border);
         }
 
         .tab-btn {
             flex: 1 1 auto;
-            padding: 15px 10px;
+            padding: 14px 15px;
             border: none;
-            background: #f1f1f1;
+            background: #f4f4f4;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
             color: #555;
-            transition: 0.2s;
+            transition: background 0.2s;
             font-size: 0.9rem;
-            border-right: 1px solid #ddd;
-            min-width: 110px;
+            border-right: 1px solid var(--border);
+            text-align: center;
         }
 
-        .tab-btn:hover { background: #e0e0e0; color: var(--primary); }
-        .tab-btn.active { background: var(--primary); color: white; }
+        .tab-btn:hover { background: #e9e9e9; color: var(--primary); }
+        .tab-btn.active { 
+            background: #fff; 
+            color: var(--primary); 
+            border-bottom: 2px solid var(--primary); /* Subtiel accent */
+            font-weight: 600;
+        }
 
         /* CONTENT */
-        .content { display: none; padding: 25px; animation: fadeIn 0.4s; }
+        .content { display: none; padding: 30px; animation: fadeIn 0.3s; }
         .content.active { display: block; }
 
-        h2 { color: var(--primary); margin-top: 0; font-size: 1.3rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        h3 { color: var(--secondary); margin-top: 20px; font-size: 1.1rem; }
+        h2 { 
+            color: var(--primary); 
+            margin-top: 0; 
+            font-size: 1.25rem; 
+            border-bottom: 1px solid var(--border); 
+            padding-bottom: 10px; 
+            font-weight: 600;
+        }
         
-        /* INFO BOXES */
-        .box { padding: 15px; margin: 15px 0; border-radius: 4px; font-size: 0.95rem; line-height: 1.5; }
-        .box-info { background: #eaf2f8; border-left: 4px solid var(--info); }
-        .box-alert { background: #fff5f5; border-left: 4px solid var(--alert); }
-        .box-success { background: #eafaf1; border-left: 4px solid var(--success); }
-        .box-community { background: #fff8e1; border-left: 4px solid #f39c12; }
+        h3 { 
+            color: var(--secondary); 
+            margin-top: 25px; 
+            margin-bottom: 10px;
+            font-size: 1.05rem; 
+            font-weight: 600;
+        }
+        
+        /* INFO BOXES (Zakelijker) */
+        .box { 
+            padding: 15px; 
+            margin: 15px 0; 
+            background: #f9f9f9; 
+            border: 1px solid #eee;
+            border-left-width: 4px;
+            font-size: 0.95rem; 
+        }
+        /* Kleuren subtieler gehouden */
+        .box-info { border-left-color: #2980b9; }   /* Blauw */
+        .box-alert { border-left-color: #c0392b; background-color: #fffbfc; } /* Rood */
+        .box-success { border-left-color: #27ae60; } /* Groen */
 
         /* LINKS & BUTTONS */
         .btn {
             display: inline-block;
-            padding: 10px 15px;
-            border-radius: 4px;
+            padding: 8px 16px;
+            border-radius: 3px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 0.9rem;
             margin-top: 10px;
-            transition: transform 0.2s;
+            border: 1px solid transparent;
+            transition: background 0.2s;
         }
-        .btn:hover { transform: translateY(-1px); }
         
         .btn-primary { background: var(--primary); color: white; }
-        .btn-sec { background: var(--secondary); color: white; }
-        .btn-outline { border: 1px solid var(--primary); color: var(--primary); background: white; }
-        .btn-forum { background: #f39c12; color: #fff; }
+        .btn-primary:hover { background: #660000; }
+
+        .btn-outline { 
+            background: transparent; 
+            color: var(--primary); 
+            border-color: var(--primary); 
+        }
+        .btn-outline:hover { background: #fdf5f5; }
 
         .source-link {
             font-size: 0.85rem;
             color: #666;
             text-decoration: none;
             display: block;
-            margin-top: 5px;
+            margin-top: 8px;
             font-style: italic;
         }
-        .source-link:hover { text-decoration: underline; }
+        .source-link:hover { text-decoration: underline; color: var(--primary); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        ul { padding-left: 20px; margin-top: 5px; }
+        li { margin-bottom: 5px; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* Responsive */
         @media (max-width: 600px) {
-            .tab-btn { width: 50%; border-bottom: 1px solid #ddd; }
+            .tab-btn { width: 50%; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+            .header { padding: 15px; }
+            .content { padding: 20px; }
         }
     </style>
 </head>
@@ -124,8 +157,8 @@
 
 <div class="container">
     <div class="header">
-        <h1>Wonen & Erven in Frankrijk</h1>
-        <p>De juridische gids voor Nederlanders en Belgen</p>
+        <h1>Wonen en erven in Frankrijk</h1>
+        <p>Juridische gids voor Nederlanders en Belgen</p>
     </div>
 
     <div class="tabs">
@@ -135,15 +168,15 @@
         <button class="tab-btn" onclick="openTab('familie')">4. Samengesteld</button>
         <button class="tab-btn" onclick="openTab('erfgenaam')">5. Erfgenaam NL</button>
         <button class="tab-btn" onclick="openTab('bewijs')">6. Bewijs (EVE)</button>
-        <button class="tab-btn" onclick="openTab('gids')">7. Gratis Gids</button>
+        <button class="tab-btn" onclick="openTab('gids')">7. Download gids</button>
     </div>
 
     <div id="basis" class="content active">
-        <h2>🏠 De Hoofdregel: Woonplaats is Leidend</h2>
+        <h2>De hoofdregel: woonplaats is leidend</h2>
         <p>Woont u permanent in Frankrijk? Dan is standaard het <strong>Franse erfrecht</strong> van toepassing op uw gehele nalatenschap. Dit geldt ook voor uw bezittingen in Nederland.</p>
         
         <div class="box box-info">
-            <strong>De Wet (Artikel 21):</strong><br>
+            <strong>De wet (Artikel 21):</strong><br>
             "De erfopvolging in haar geheel wordt beheerst door het recht van de staat waar de erflater op het tijdstip van overlijden zijn gewone verblijfplaats had."
         </div>
         
@@ -151,68 +184,68 @@
     </div>
 
     <div id="keuze" class="content">
-        <h2>⚖️ De Uitzondering: Kies uw eigen recht</h2>
+        <h2>De uitzondering: kies uw eigen recht</h2>
         <p>Wilt u liever dat de Nederlandse regels gelden (bijvoorbeeld voor de 'langstlevende regeling')? Dat mag, maar dit gaat niet vanzelf.</p>
 
         <div class="box box-success">
-            <strong>De Wet (Artikel 22):</strong><br>
+            <strong>De wet (Artikel 22):</strong><br>
             "Een persoon kan als het recht dat zijn erfopvolging beheerst, het recht van de staat kiezen waarvan hij de nationaliteit bezit."
         </div>
 
         <div class="box box-alert">
-            <strong>⚠️ Let op: Het Vormvereiste</strong><br>
+            <strong>Let op: het vormvereiste</strong><br>
             Deze keuze is <strong>alleen geldig</strong> als u deze uitdrukkelijk laat vastleggen in een testament. Mondelinge afspraken zijn niet rechtsgeldig.
         </div>
         
-        <a href="https://e-justice.europa.eu/content_succession-166-nl.do" target="_blank" class="btn btn-primary">Meer info op EU e-Justice</a>
+        <a href="https://e-justice.europa.eu/topics/family-matters-inheritance/inheritance/succession_nl" target="_blank" class="btn btn-outline">Meer informatie op EU e-Justice</a>
     </div>
 
     <div id="testament" class="content">
-        <h2>✍️ Het Testament: Drie Routes</h2>
+        <h2>Het testament: drie routes</h2>
         <p>Een testament is essentieel in Frankrijk. Welke vorm past bij u?</p>
 
-        <h3>1. Het Franse Testament</h3>
-        <p>U kunt kiezen voor <em>Olographe</em> (zelfgeschreven, gratis) of <em>Authentique</em> (via notaris). Let op: een Olographe testament mag <strong>nooit getypt</strong> zijn.</p>
+        <h3>1. Het Franse testament</h3>
+        <p>U kunt kiezen voor <em>Olographe</em> (zelfgeschreven, kosteloos) of <em>Authentique</em> (via notaris). Let op: een Olographe testament mag <strong>nooit getypt</strong> zijn.</p>
         <a href="https://www.service-public.fr/particuliers/vosdroits/F770" target="_blank" class="source-link">Bron: Service-Public.fr (Eisen aan testament)</a>
 
-        <h3>2. Het Internationale / Europese Testament</h3>
+        <h3>2. Het internationale / Europese testament</h3>
         <div class="box box-success">
             <strong>Tip van Monique Rombouts:</strong><br>
-            Het 'Europese Testament' kan een zorg minder zijn voor nabestaanden. Het zorgt voor een betere afstemming tussen de landen.
+            Het 'Europese testament' kan zorgen wegnemen bij nabestaanden en zorgt voor een betere afstemming tussen de landen.
             <br>
-            <a href="https://www.frankrijknotaris.nl/is-het-europees-testament-een-zorg-minder-voor-de-nabestaanden/" target="_blank" class="btn btn-outline" style="margin-top:5px;">Lees artikel Frankrijknotaris.nl</a>
+            <a href="https://www.frankrijknotaris.nl/is-het-europees-testament-een-zorg-minder-voor-de-nabestaanden/" target="_blank" class="source-link" style="margin-top:8px; font-weight:bold;">Lees artikel op Frankrijknotaris.nl &raquo;</a>
         </div>
 
-        <h3>3. Het Nederlandse Testament</h3>
+        <h3>3. Het Nederlandse testament</h3>
         <p>Geregeld in Nederland? Zorg voor registratie in het <strong>Centraal Testamentenregister (CTR)</strong>.</p>
         <a href="https://www.notaris.nl/bij-overlijden/centraal-testamentenregister" target="_blank" class="source-link">Bron: Notaris.nl (Over het CTR)</a>
 
-        <div class="box box-community">
-            <strong>🗣️ Praat mee op het forum</strong><br>
-            Op Nederlanders.fr delen duizenden leden hun ervaringen over testamenten in Frankrijk.
+        <div class="box box-info" style="border-left-color: #f39c12;">
+            <strong>Forumdiscussies</strong><br>
+            Op Nederlanders.fr delen honderden leden hun ervaringen over testamenten in Frankrijk.
             <br>
-            <a href="https://www.nederlanders.fr/main/search/search?q=testament" target="_blank" class="btn btn-forum">Lees forumdiscussies over 'Testament'</a>
+            <a href="https://www.nederlanders.fr/main/search/search?q=testament" target="_blank" class="source-link" style="font-weight:bold;">Bekijk forumdiscussies over 'Testament' &raquo;</a>
         </div>
     </div>
 
     <div id="familie" class="content">
-        <h2>💔 Samengestelde Familie & De "60% Val"</h2>
+        <h2>Samengestelde familie en de "60% val"</h2>
         <p>Heeft u kinderen uit een eerdere relatie? Het Franse systeem kent geen bloedband tussen stiefouder en stiefkind.</p>
 
         <div class="box box-alert">
-            <strong>Het Risico:</strong><br>
+            <strong>Het risico:</strong><br>
             Als uw stiefkind erft van de stiefouder (uw nieuwe partner), betaalt dit kind in Frankrijk <strong>60% erfbelasting</strong>.
         </div>
 
         <p><strong>Veelgemaakte denkfout:</strong><br>
-        <em>"Ik kies in mijn testament voor Nederlands Erfrecht, dus dan gelden ook de Nederlandse belastingtarieven."</em><br>
-        <strong>FOUT.</strong> Frankrijk heft belasting over wat in Frankrijk is, volgens Franse tarieven.</p>
+        <em>"Ik kies in mijn testament voor Nederlands erfrecht, dus dan gelden ook de Nederlandse belastingtarieven."</em><br>
+        <strong>Dit is onjuist.</strong> Frankrijk heft belasting over wat in Frankrijk is, volgens Franse tarieven.</p>
 
-        <a href="https://www.frankrijknotaris.nl/een-keuze-voor-nederlands-erfrecht-is-geen-keuze-voor-nederlandse-erfbelasting/" target="_blank" class="btn btn-primary">Lees praktijkvoorbeeld (Rob van Schijndel)</a>
+        <a href="https://www.interfrance-blog.nl/erfrecht-frankrijk-kinderen/" target="_blank" class="btn btn-primary">Lees praktijkvoorbeeld (Rob van Schijndel)</a>
     </div>
 
     <div id="erfgenaam" class="content">
-        <h2>🇳🇱 Ik woon in NL, erflater woonde in FR</h2>
+        <h2>Ik woon in NL, erflater woonde in FR</h2>
         <p>U erft een huis of geld uit Frankrijk. Waar betaalt u belasting?</p>
 
         <div class="box box-info">
@@ -220,32 +253,32 @@
             Over vastgoed in Frankrijk (een huis) betaalt u <strong>altijd</strong> erfbelasting in Frankrijk.
         </div>
 
-        <h3>De "10-Jarenregel"</h3>
-        <p>Had de overledene de Nederlandse nationaliteit en woonde hij/zij korter dan 10 jaar in Frankrijk? Dan ziet de Nederlandse fiscus hem/haar nog als inwoner. U moet dan ook in NL aangifte doen, maar u mag de Franse belasting vaak verrekenen.</p>
+        <h3>De "10-jarenregel"</h3>
+        <p>Had de overledene de Nederlandse nationaliteit en woonde hij/zij korter dan 10 jaar in Frankrijk? Dan ziet de Nederlandse fiscus hem/haar nog als inwoner. U moet dan ook in Nederland aangifte doen, maar u mag de Franse belasting vaak verrekenen.</p>
         
-        <a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/erfbelasting/content/ik-heb-een-erfenis-uit-het-buitenland-waar-betaal-ik-erfbelasting" target="_blank" class="btn btn-sec">Info Belastingdienst.nl</a>
+        <a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/erfbelasting/content/ik-heb-een-erfenis-uit-het-buitenland-waar-betaal-ik-erfbelasting" target="_blank" class="btn btn-outline">Informatie Belastingdienst.nl</a>
     </div>
 
     <div id="bewijs" class="content">
-        <h2>📜 De Europese Erfrechtverklaring (EVE)</h2>
-        <p>Dit is het officiële document (Formulier V) waarmee u in de hele EU bewijst dat u de erfgenaam bent. Onmisbaar voor de bank.</p>
+        <h2>De Europese Erfrechtverklaring (EVE)</h2>
+        <p>Dit is het officiële document (Formulier V) waarmee u in de hele EU bewijst dat u de erfgenaam bent. Dit document is vaak onmisbaar voor de bank.</p>
         
         <div class="box box-success">
             <strong>Waar regelt u dit?</strong><br>
             Bij de notaris die de nalatenschap behandelt (in NL of FR). Het vervangt dure vertalingen van oude aktes.
         </div>
         
-        <a href="https://e-justice.europa.eu/topics/family-matters-inheritance/inheritance/succession_nl" target="_blank" class="btn btn-primary">Naar EU e-Justice Portaal</a>
+        <a href="https://e-justice.europa.eu/topics/family-matters-inheritance/inheritance/succession_nl" target="_blank" class="btn btn-primary">Naar EU e-Justice portaal</a>
     </div>
 
     <div id="gids" class="content">
-        <h2>📖 Officiële EU Gids voor Burgers</h2>
+        <h2>Officiële EU-gids voor burgers</h2>
         <p>De Europese Unie heeft een praktische gids gepubliceerd: <em>"Grensoverschrijdende erfopvolging"</em>.</p>
         
-        <div style="text-align:center; background:#f4f4f4; padding:20px; border-radius:8px;">
+        <div style="text-align:center; background:#f9f9f9; padding:25px; border: 1px solid #eee; border-radius:4px;">
             <p><strong>Download de volledige gids (PDF)</strong><br>
             Alle regels en praktische tips in één document.</p>
-            <a href="https://op.europa.eu/nl/publication-detail/-/publication/61afb4c0-a71b-11e7-837e-01aa75ed71a1" target="_blank" class="btn btn-success" style="background:#27ae60; color:white;">Download via Europa.eu</a>
+            <a href="https://op.europa.eu/nl/publication-detail/-/publication/61afb4c0-a71b-11e7-837e-01aa75ed71a1" target="_blank" class="btn btn-primary">Download via Europa.eu</a>
         </div>
     </div>
 
@@ -265,16 +298,20 @@
             buttons[i].classList.remove("active");
         }
 
-        // Activeer gekozen tab en knop
-        document.getElementById(tabName).classList.add("active");
-        
-        // Zoek de knop die geklikt is (via event bubbling of loop) - simpele fix:
-        // We lussen door knoppen om de juiste 'active' te maken op basis van onclick attribuut
-        for (var i = 0; i < buttons.length; i++) {
-            if(buttons[i].getAttribute("onclick").includes(tabName)) {
-                buttons[i].classList.add("active");
-            }
+        // Activeer gekozen tab
+        var activeContent = document.getElementById(tabName);
+        if (activeContent) {
+            activeContent.classList.add("active");
         }
+        
+        // Activeer de knop die deze functie aanriep
+        // We zoeken de knop die de onclick heeft met de juiste tabName
+        var allButtons = document.querySelectorAll('.tab-btn');
+        allButtons.forEach(function(btn) {
+            if(btn.getAttribute('onclick').includes(tabName)) {
+                btn.classList.add('active');
+            }
+        });
     }
 </script>
 
