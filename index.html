@@ -7,10 +7,10 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- ALGEMENE STYLING (Bestaand) --- */
+        /* --- ALGEMENE STYLING --- */
         :root {
             --primary: #800000; /* Bordeaux Rood */
             --secondary: #333333; /* Donkergrijs/Zwart */
@@ -22,12 +22,16 @@
         }
 
         body {
-            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-family: 'Mulish', sans-serif; /* HIER AANGEPAST */
             background-color: transparent;
             color: var(--text);
             margin: 0;
             padding: 10px;
             line-height: 1.6;
+        }
+
+        h1, h2, h3, .header h1 {
+            font-family: 'Poppins', sans-serif; /* ALLE KOPPEN NU POPPINS */
         }
 
         .container {
@@ -68,14 +72,14 @@
             font-size: 0.9rem;
             border-right: 1px solid var(--border);
             text-align: center;
-            font-family: inherit; /* Neemt font van body over */
+            font-family: 'Poppins', sans-serif; /* OOK KNOPPEN POPPINS */
         }
 
         .tab-btn:hover { background: #e9e9e9; color: var(--primary); }
         .tab-btn.active { 
             background: #fff; 
             color: var(--primary); 
-            border-bottom: 3px solid var(--primary); /* Iets dikker voor duidelijkheid */
+            border-bottom: 3px solid var(--primary); 
             font-weight: 700;
         }
         
@@ -131,6 +135,7 @@
             margin-top: 10px;
             border: 1px solid transparent;
             transition: background 0.2s;
+            font-family: 'Poppins', sans-serif;
         }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: #660000; }
@@ -150,19 +155,11 @@
         ul { padding-left: 20px; margin-top: 5px; }
         li { margin-bottom: 5px; }
 
-        /* --- 🛠️ NIEUWE CSS VOOR DE SCANNER TOOL --- */
+        /* --- 🛠️ SPECIFIEKE CSS VOOR DE SCANNER TOOL --- */
         
-        #scanner {
-            font-family: 'Mulish', sans-serif; /* Specifieke fonts voor de tool */
-        }
-        
-        #scanner h2, #scanner h3 {
-            font-family: 'Poppins', sans-serif;
-        }
-
         /* Stappen Navigatie */
         .step-content {
-            display: none; /* Verborgen tot actief */
+            display: none; 
             animation: fadeIn 0.4s ease;
         }
         .step-content.active { display: block; }
@@ -243,6 +240,7 @@
             font-size: 0.85rem; font-weight: 400; line-height: 1.4;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             pointer-events: none;
+            font-family: 'Mulish', sans-serif;
         }
         .tooltip-text::after {
             content: ""; position: absolute; top: 100%; left: 50%;
@@ -465,8 +463,7 @@
             activeContent.classList.add("active");
         }
         
-        // Activeer de aangeklikte knop (via event.currentTarget of loop)
-        // De oorspronkelijke methode:
+        // Activeer de aangeklikte knop
         var allButtons = document.querySelectorAll('.tab-btn');
         allButtons.forEach(function(btn) {
             if(btn.getAttribute('onclick').includes(tabName)) {
@@ -510,7 +507,7 @@
         const nextStep = document.getElementById(id);
         nextStep.classList.add('active');
         
-        // Scroll zachtjes naar volgende stap (binnen de iframe kan dit soms lastig zijn, maar we proberen het)
+        // Scroll zachtjes naar volgende stap
         setTimeout(() => {
             nextStep.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, 200);
