@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erfrechtgids Frankrijk</title>
+    <title>Erfrechtgids Frankrijk & Scanner</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* --- STYLING (Zakelijk & Correct) --- */
+        /* --- ALGEMENE STYLING (Bestaand) --- */
         :root {
             --primary: #800000; /* Bordeaux Rood */
             --secondary: #333333; /* Donkergrijs/Zwart */
@@ -13,6 +18,7 @@
             --text: #333;
             --border: #e0e0e0;
             --link-color: #800000;
+            --accent-yellow: #fffbe6; /* Voor de scanner accenten */
         }
 
         body {
@@ -29,7 +35,7 @@
             margin: 0 auto;
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 4px; /* Iets strakker */
+            border-radius: 4px;
         }
 
         /* HEADER */
@@ -62,14 +68,22 @@
             font-size: 0.9rem;
             border-right: 1px solid var(--border);
             text-align: center;
+            font-family: inherit; /* Neemt font van body over */
         }
 
         .tab-btn:hover { background: #e9e9e9; color: var(--primary); }
         .tab-btn.active { 
             background: #fff; 
             color: var(--primary); 
-            border-bottom: 2px solid var(--primary); /* Subtiel accent */
-            font-weight: 600;
+            border-bottom: 3px solid var(--primary); /* Iets dikker voor duidelijkheid */
+            font-weight: 700;
+        }
+        
+        /* Speciale stijl voor de Tool knop */
+        .tab-btn-tool {
+            background-color: var(--accent-yellow);
+            color: var(--primary);
+            font-weight: 700;
         }
 
         /* CONTENT */
@@ -92,8 +106,8 @@
             font-size: 1.05rem; 
             font-weight: 600;
         }
-        
-        /* INFO BOXES (Zakelijker) */
+
+        /* INFO BOXES */
         .box { 
             padding: 15px; 
             margin: 15px 0; 
@@ -102,12 +116,11 @@
             border-left-width: 4px;
             font-size: 0.95rem; 
         }
-        /* Kleuren subtieler gehouden */
-        .box-info { border-left-color: #2980b9; }   /* Blauw */
-        .box-alert { border-left-color: #c0392b; background-color: #fffbfc; } /* Rood */
-        .box-success { border-left-color: #27ae60; } /* Groen */
+        .box-info { border-left-color: #2980b9; }
+        .box-alert { border-left-color: #c0392b; background-color: #fffbfc; }
+        .box-success { border-left-color: #27ae60; }
 
-        /* LINKS & BUTTONS */
+        /* LINKS & BUTTONS (Standaard) */
         .btn {
             display: inline-block;
             padding: 8px 16px;
@@ -119,15 +132,9 @@
             border: 1px solid transparent;
             transition: background 0.2s;
         }
-        
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: #660000; }
-
-        .btn-outline { 
-            background: transparent; 
-            color: var(--primary); 
-            border-color: var(--primary); 
-        }
+        .btn-outline { background: transparent; color: var(--primary); border-color: var(--primary); }
         .btn-outline:hover { background: #fdf5f5; }
 
         .source-link {
@@ -143,6 +150,128 @@
         ul { padding-left: 20px; margin-top: 5px; }
         li { margin-bottom: 5px; }
 
+        /* --- 🛠️ NIEUWE CSS VOOR DE SCANNER TOOL --- */
+        
+        #scanner {
+            font-family: 'Mulish', sans-serif; /* Specifieke fonts voor de tool */
+        }
+        
+        #scanner h2, #scanner h3 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Stappen Navigatie */
+        .step-content {
+            display: none; /* Verborgen tot actief */
+            animation: fadeIn 0.4s ease;
+        }
+        .step-content.active { display: block; }
+
+        .step-badge {
+            background-color: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+
+        /* Scanner Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        /* Scanner Knoppen */
+        .btn-option {
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            padding: 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            color: var(--primary);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-option:hover {
+            border-color: var(--primary);
+            background-color: var(--accent-yellow);
+        }
+
+        .btn-option.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(128,0,0,0.2);
+        }
+
+        /* Tooltip Logic */
+        .tooltip-container { position: relative; display: inline-block; }
+        .info-icon {
+            background: var(--accent-yellow);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; cursor: help; margin-left: 10px;
+        }
+        .btn-option.selected .info-icon { background: rgba(255,255,255,0.2); color: white; border-color: white; }
+
+        .tooltip-text {
+            visibility: hidden; width: 260px;
+            background-color: var(--primary); color: #fff;
+            text-align: left; border-radius: 6px; padding: 12px;
+            position: absolute; z-index: 100;
+            bottom: 140%; left: 50%; margin-left: -130px;
+            opacity: 0; transition: opacity 0.3s;
+            font-size: 0.85rem; font-weight: 400; line-height: 1.4;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+        .tooltip-text::after {
+            content: ""; position: absolute; top: 100%; left: 50%;
+            margin-left: -5px; border-width: 5px; border-style: solid;
+            border-color: var(--primary) transparent transparent transparent;
+        }
+        .btn-option:hover .tooltip-text, .tooltip-container:hover .tooltip-text {
+            visibility: visible; opacity: 1;
+        }
+
+        /* Resultaat Box */
+        #result-box {
+            display: none;
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 4px;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .legal-sources {
+            margin-top: 20px; padding: 15px;
+            background: #f4f4f4; border-radius: 4px;
+            font-size: 0.85rem; color: #555;
+        }
+        .legal-sources h4 { margin: 0 0 5px 0; font-size: 0.8rem; text-transform: uppercase; color: #888; }
+
+        /* Animaties */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* Responsive */
@@ -169,112 +298,85 @@
         <button class="tab-btn" onclick="openTab('erfgenaam')">5. Erfgenaam NL</button>
         <button class="tab-btn" onclick="openTab('bewijs')">6. Bewijs (EVE)</button>
         <button class="tab-btn" onclick="openTab('gids')">7. Download gids</button>
+        <button class="tab-btn tab-btn-tool" onclick="openTab('scanner')">8. Doe de Check</button>
     </div>
 
     <div id="basis" class="content active">
         <h2>De hoofdregel: woonplaats is leidend</h2>
         <p>Woont u permanent in Frankrijk? Dan is standaard het <strong>Franse erfrecht</strong> van toepassing op uw gehele nalatenschap. Dit geldt ook voor uw bezittingen in Nederland.</p>
-        
         <div class="box box-info">
             <strong>De wet (Artikel 21):</strong><br>
             "De erfopvolging in haar geheel wordt beheerst door het recht van de staat waar de erflater op het tijdstip van overlijden zijn gewone verblijfplaats had."
         </div>
-        
         <a href="https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX%3A32012R0650" target="_blank" class="source-link">Bron: EU Verordening 650/2012 (EUR-Lex)</a>
     </div>
 
     <div id="keuze" class="content">
         <h2>De uitzondering: kies uw eigen recht</h2>
         <p>Wilt u liever dat de Nederlandse regels gelden (bijvoorbeeld voor de 'langstlevende regeling')? Dat mag, maar dit gaat niet vanzelf.</p>
-
         <div class="box box-success">
             <strong>De wet (Artikel 22):</strong><br>
             "Een persoon kan als het recht dat zijn erfopvolging beheerst, het recht van de staat kiezen waarvan hij de nationaliteit bezit."
         </div>
-
         <div class="box box-alert">
             <strong>Let op: het vormvereiste</strong><br>
             Deze keuze is <strong>alleen geldig</strong> als u deze uitdrukkelijk laat vastleggen in een testament. Mondelinge afspraken zijn niet rechtsgeldig.
         </div>
-        
         <a href="https://e-justice.europa.eu/topics/family-matters-inheritance/inheritance/succession_nl" target="_blank" class="btn btn-outline">Meer informatie op EU e-Justice</a>
     </div>
 
     <div id="testament" class="content">
         <h2>Het testament: drie routes</h2>
         <p>Een testament is essentieel in Frankrijk. Welke vorm past bij u?</p>
-
         <h3>1. Het Franse testament</h3>
         <p>U kunt kiezen voor <em>Olographe</em> (zelfgeschreven, kosteloos) of <em>Authentique</em> (via notaris). Let op: een Olographe testament mag <strong>nooit getypt</strong> zijn.</p>
-        <a href="https://www.service-public.fr/particuliers/vosdroits/F770" target="_blank" class="source-link">Bron: Service-Public.fr (Eisen aan testament)</a>
-
         <h3>2. Het internationale / Europese testament</h3>
         <div class="box box-success">
             <strong>Tip van Monique Rombouts:</strong><br>
             Het 'Europese testament' kan zorgen wegnemen bij nabestaanden en zorgt voor een betere afstemming tussen de landen.
-            <br>
-            <a href="https://www.frankrijknotaris.nl/is-het-europees-testament-een-zorg-minder-voor-de-nabestaanden/" target="_blank" class="source-link" style="margin-top:8px; font-weight:bold;">Lees artikel op Frankrijknotaris.nl &raquo;</a>
         </div>
-
         <h3>3. Het Nederlandse testament</h3>
         <p>Geregeld in Nederland? Zorg voor registratie in het <strong>Centraal Testamentenregister (CTR)</strong>.</p>
         <a href="https://www.notaris.nl/bij-overlijden/centraal-testamentenregister" target="_blank" class="source-link">Bron: Notaris.nl (Over het CTR)</a>
-
-        <div class="box box-info" style="border-left-color: #f39c12;">
-            <strong>Forumdiscussies</strong><br>
-            Op Nederlanders.fr delen honderden leden hun ervaringen over testamenten in Frankrijk.
-            <br>
-            <a href="https://www.nederlanders.fr/main/search/search?q=testament" target="_blank" class="source-link" style="font-weight:bold;">Bekijk forumdiscussies over 'Testament' &raquo;</a>
-        </div>
     </div>
 
     <div id="familie" class="content">
         <h2>Samengestelde familie en de "60% val"</h2>
         <p>Heeft u kinderen uit een eerdere relatie? Het Franse systeem kent geen bloedband tussen stiefouder en stiefkind.</p>
-
         <div class="box box-alert">
             <strong>Het risico:</strong><br>
             Als uw stiefkind erft van de stiefouder (uw nieuwe partner), betaalt dit kind in Frankrijk <strong>60% erfbelasting</strong>.
         </div>
-
         <p><strong>Veelgemaakte denkfout:</strong><br>
         <em>"Ik kies in mijn testament voor Nederlands erfrecht, dus dan gelden ook de Nederlandse belastingtarieven."</em><br>
         <strong>Dit is onjuist.</strong> Frankrijk heft belasting over wat in Frankrijk is, volgens Franse tarieven.</p>
-
-        <a href="https://www.interfrance-blog.nl/erfrecht-frankrijk-kinderen/" target="_blank" class="btn btn-primary">Lees praktijkvoorbeeld (Rob van Schijndel)</a>
     </div>
 
     <div id="erfgenaam" class="content">
         <h2>Ik woon in NL, erflater woonde in FR</h2>
         <p>U erft een huis of geld uit Frankrijk. Waar betaalt u belasting?</p>
-
         <div class="box box-info">
             <strong>Hoofdregel (Situs-beginsel):</strong><br>
             Over vastgoed in Frankrijk (een huis) betaalt u <strong>altijd</strong> erfbelasting in Frankrijk.
         </div>
-
         <h3>De "10-jarenregel"</h3>
         <p>Had de overledene de Nederlandse nationaliteit en woonde hij/zij korter dan 10 jaar in Frankrijk? Dan ziet de Nederlandse fiscus hem/haar nog als inwoner. U moet dan ook in Nederland aangifte doen, maar u mag de Franse belasting vaak verrekenen.</p>
-        
         <a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/erfbelasting/content/ik-heb-een-erfenis-uit-het-buitenland-waar-betaal-ik-erfbelasting" target="_blank" class="btn btn-outline">Informatie Belastingdienst.nl</a>
     </div>
 
     <div id="bewijs" class="content">
         <h2>De Europese Erfrechtverklaring (EVE)</h2>
         <p>Dit is het officiële document (Formulier V) waarmee u in de hele EU bewijst dat u de erfgenaam bent. Dit document is vaak onmisbaar voor de bank.</p>
-        
         <div class="box box-success">
             <strong>Waar regelt u dit?</strong><br>
             Bij de notaris die de nalatenschap behandelt (in NL of FR). Het vervangt dure vertalingen van oude aktes.
         </div>
-        
         <a href="https://e-justice.europa.eu/topics/family-matters-inheritance/inheritance/succession_nl" target="_blank" class="btn btn-primary">Naar EU e-Justice portaal</a>
     </div>
 
     <div id="gids" class="content">
         <h2>Officiële EU-gids voor burgers</h2>
         <p>De Europese Unie heeft een praktische gids gepubliceerd: <em>"Grensoverschrijdende erfopvolging"</em>.</p>
-        
         <div style="text-align:center; background:#f9f9f9; padding:25px; border: 1px solid #eee; border-radius:4px;">
             <p><strong>Download de volledige gids (PDF)</strong><br>
             Alle regels en praktische tips in één document.</p>
@@ -282,36 +384,227 @@
         </div>
     </div>
 
+    <div id="scanner" class="content">
+        <h2 style="border-bottom:none;">Erfrecht Scanner</h2>
+        <p>Beantwoord 3 vragen en zie direct de grootste risico's voor uw situatie.</p>
+
+        <div id="step-0" class="step-content active">
+            <h3 class="question-title"><span class="step-badge">1</span> Waar is uw officiële woonplaats?</h3>
+            <div class="options-grid">
+                <button class="btn-option" onclick="handleChoice('residence', 'fr')">
+                    Frankrijk (Resident)
+                </button>
+                <button class="btn-option" onclick="handleChoice('residence', 'nl')">
+                    Nederland (Tweede Woning)
+                </button>
+            </div>
+        </div>
+
+        <div id="step-1" class="step-content">
+            <h3 class="question-title"><span class="step-badge">2</span> Wat is uw burgerlijke staat?</h3>
+            <div class="options-grid">
+                <button class="btn-option" onclick="handleChoice('relation', 'married')">
+                    Getrouwd
+                </button>
+                <button class="btn-option" onclick="handleChoice('relation', 'pacs')">
+                    Partnerschap / PACS
+                </button>
+                <button class="btn-option" onclick="handleChoice('relation', 'cohab')">
+                    <div>Samenwonend</div>
+                    <div class="tooltip-container">
+                        <span class="info-icon">i</span>
+                        <span class="tooltip-text">
+                            <strong>⚠️ Let op: Fiscale Valkuil!</strong><br>
+                            Zonder huwelijk/PACS betaalt u in Frankrijk <strong>60% erfbelasting</strong>, ongeacht of u resident bent of niet.
+                        </span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <div id="step-2" class="step-content">
+            <h3 class="question-title"><span class="step-badge">3</span> Zijn er kinderen betrokken?</h3>
+            <div class="options-grid">
+                <button class="btn-option" onclick="handleChoice('kids', 'common')">
+                    Alleen gezamenlijke kinderen
+                </button>
+                <button class="btn-option" onclick="handleChoice('kids', 'step')">
+                    Samengesteld gezin
+                </button>
+                <button class="btn-option" onclick="handleChoice('kids', 'none')">
+                    Geen kinderen
+                </button>
+            </div>
+        </div>
+
+        <div id="result-box">
+            <div id="advice-content"></div>
+        </div>
+    </div>
+
 </div>
 
 <script>
+    // --- 1. DE BESTAANDE TAB LOGICA ---
     function openTab(tabName) {
-        // Verberg alle content
+        // Verberg alle content divs
         var contents = document.getElementsByClassName("content");
         for (var i = 0; i < contents.length; i++) {
             contents[i].classList.remove("active");
         }
         
-        // Deactiveer alle knoppen
+        // Deactiveer alle tab-knoppen
         var buttons = document.getElementsByClassName("tab-btn");
         for (var i = 0; i < buttons.length; i++) {
             buttons[i].classList.remove("active");
         }
 
-        // Activeer gekozen tab
+        // Activeer de juiste content div
         var activeContent = document.getElementById(tabName);
         if (activeContent) {
             activeContent.classList.add("active");
         }
         
-        // Activeer de knop die deze functie aanriep
-        // We zoeken de knop die de onclick heeft met de juiste tabName
+        // Activeer de aangeklikte knop (via event.currentTarget of loop)
+        // De oorspronkelijke methode:
         var allButtons = document.querySelectorAll('.tab-btn');
         allButtons.forEach(function(btn) {
             if(btn.getAttribute('onclick').includes(tabName)) {
                 btn.classList.add('active');
             }
         });
+    }
+
+    // --- 2. DE NIEUWE SCANNER LOGICA ---
+    const state = {
+        residence: null,
+        relation: null,
+        kids: null
+    };
+
+    function handleChoice(category, value) {
+        state[category] = value;
+        
+        // Visuele selectie knop
+        let targetBtn = event.target.closest('.btn-option');
+        if(!targetBtn) return;
+        const parentGrid = targetBtn.parentElement;
+        const buttons = parentGrid.getElementsByClassName('btn-option');
+        for (let btn of buttons) { btn.classList.remove('selected'); }
+        targetBtn.classList.add('selected');
+
+        // Navigatie logica
+        if (category === 'residence') {
+            goToScannerStep('step-1');
+        } else if (category === 'relation') {
+            goToScannerStep('step-2');
+        } else if (category === 'kids') {
+            calculateResult();
+        }
+    }
+
+    function goToScannerStep(id) {
+        // Verberg resultaat als men terug klikt
+        document.getElementById('result-box').style.display = 'none';
+        
+        const nextStep = document.getElementById(id);
+        nextStep.classList.add('active');
+        
+        // Scroll zachtjes naar volgende stap (binnen de iframe kan dit soms lastig zijn, maar we proberen het)
+        setTimeout(() => {
+            nextStep.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 200);
+    }
+
+    function calculateResult() {
+        const box = document.getElementById('result-box');
+        const content = document.getElementById('advice-content');
+        let html = '';
+
+        // --- SCENARIO LOGICA ---
+
+        // SCENARIO 1: TWEEDE WONING (NL Resident)
+        if (state.residence === 'nl') {
+            html += `<div style="margin-bottom:15px;"><span style="background:#e3f2fd; color:#0d47a1; padding:4px 8px; border-radius:4px; font-weight:bold; font-size:0.8rem;">SITUATIE: TWEEDE WONING (NL)</span></div>`;
+
+            if (state.relation === 'cohab') {
+                html += `
+                    <h3>⚠️ Samenwonend met Tweede Huis</h3>
+                    <p>Juridisch geldt NL recht, maar voor de Franse fiscus bent u 'vreemden'.</p>
+                    <div class="box box-alert">
+                        <strong>Fiscaal Alarm:</strong> De partner betaalt <strong>60% erfbelasting</strong> over het Franse huis. Vrijstelling is slechts €1.594.
+                    </div>
+                    <p><strong>Oplossing:</strong> Trouwen, Geregistreerd Partnerschap of aankoop via SCI met tontine.</p>
+                `;
+            } else if (state.relation === 'married') {
+                html += `
+                    <h3>Getrouwd met Tweede Huis</h3>
+                    <p>Overzichtelijk. Nederlands erfrecht is van toepassing (Wettelijke Verdeling). U doet in beide landen aangifte, maar voorkomt dubbele belasting via het verdrag uit 1956.</p>
+                `;
+            } else {
+                 html += `
+                    <h3>Tweede Huis in Frankrijk</h3>
+                    <p>Omdat u in Nederland woont, is Nederlands recht leidend (Art. 21 Erfrechtverordening). U hoeft geen rechtskeuze te maken om Franse regels te ontwijken.</p>
+                `;
+            }
+            
+            html += `
+                <div class="legal-sources">
+                    <h4>Juridische Grondslag:</h4>
+                    <ul>
+                        <li><strong>EU Verordening 650/2012 Art. 21:</strong> Recht van gewone verblijfplaats (NL) geldt.</li>
+                        <li><strong>Verdrag NL-FR 1956:</strong> Vermijding dubbele belasting (situsbeginsel).</li>
+                    </ul>
+                </div>
+            `;
+        } 
+        
+        // SCENARIO 2: RESIDENT IN FRANKRIJK
+        else {
+            html += `<div style="margin-bottom:15px;"><span style="background:#e8f5e9; color:#1b5e20; padding:4px 8px; border-radius:4px; font-weight:bold; font-size:0.8rem;">SITUATIE: WONACHTIG IN FRANKRIJK</span></div>`;
+
+            if (state.relation === 'married' && state.kids === 'step') {
+                 html += `
+                    <h3>🛑 Risico: Samengesteld Gezin</h3>
+                    <p>Frans recht geldt. Bij stiefkinderen vervalt 'vruchtgebruik'. De langstlevende krijgt slechts 1/4e eigendom en kan het huis uitgezet worden.</p>
+                    <div class="box box-alert">
+                        <strong>Actie vereist:</strong> Maak een testament met <em>Rechtskeuze Nederland</em> (Art. 22).
+                    </div>
+                 `;
+            } else if (state.relation === 'cohab') {
+                html += `
+                    <h3>⚠️ Samenwonend in Frankrijk</h3>
+                    <p>Zonder huwelijk of PACS erft u <strong>niets</strong> van elkaar en betaalt u <strong>60% belasting</strong> als u elkaar per testament benoemt.</p>
+                    <div class="box box-info">
+                        <strong>Advies:</strong> Trouwen of PACS is fiscaal noodzakelijk (0% tarief). Zonder testament erft de partner bovendien niets.
+                    </div>
+                `;
+            } else {
+                html += `
+                    <h3>Gehuwd in Frankrijk</h3>
+                    <p>U bent redelijk beschermd. Let op: het Franse systeem maakt kinderen vaak 'blote eigenaar', wat verkoop van het huis kan bemoeilijken.</p>
+                    <div class="box box-success">
+                        <strong>Tip:</strong> Kies voor Nederlands recht in uw testament voor maximale controle door de langstlevende.
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="legal-sources">
+                    <h4>Juridische Grondslag:</h4>
+                    <ul>
+                        <li><strong>EU Verordening 650/2012 Art. 22:</strong> Rechtskeuze nationaliteit.</li>
+                        <li><strong>Code Civil Art. 757:</strong> Beperking rechten langstlevende bij stiefkinderen.</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        html += `<a href="https://frankrijknotaris.nl" target="_blank" class="btn btn-primary">Zoek een gespecialiseerde notaris</a>`;
+        
+        content.innerHTML = html;
+        box.style.display = 'block';
+        setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 200);
     }
 </script>
 
