@@ -277,7 +277,27 @@
             .tab-btn { width: 50%; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
             .header { padding: 15px; }
             .content { padding: 20px; }
+            .container { overflow-x: clip; } /* verborgen tooltips mogen geen horizontale scroll geven */
         }
+
+        /* Peil-label: stempel bij de uitkomst en voettekstalinea. Alleen zichtbaar als PEIL_LABEL_AAN true is. */
+        .peil-stempel:focus-visible, .peil-alinea a:focus-visible{ outline:2px solid #800000; outline-offset:3px; border-radius:4px; }
+        .peil-stempel-rij{ display:flex; justify-content:flex-end; margin-top:12px; }
+        .peil-stempel{ display:inline-flex; align-items:center; gap:9px; min-height:44px; max-width:100%; padding:4px 12px 4px 4px; border:1px solid #eadede; border-radius:999px; background:#fff; color:#800000; text-decoration:none; transition:border-color .15s, background .15s; }
+        .peil-stempel svg{ flex:none; width:36px; height:36px; display:block; opacity:.85; filter:drop-shadow(0 1px 0 rgba(255,255,255,.9)) drop-shadow(0 -1px 0 rgba(128,0,0,.12)); }
+        .peil-stempel__tk{ display:flex; flex-direction:column; line-height:1.25; min-width:0; overflow-wrap:anywhere; }
+        .peil-stempel__t1{ font-size:13px; font-weight:700; color:#7a1f1f; }
+        .peil-stempel__t2{ font-size:12px; color:#6a5d58; }
+        .peil-stempel:hover{ border-color:#cfa9a9; background:#fcf7f7; }
+        .peil-pijl{ display:inline-block; margin-left:.25em; font-size:12px; line-height:1; color:inherit; transition:transform .15s; }
+        @media (prefers-reduced-motion: no-preference){ .peil-stempel:hover .peil-pijl{ transform:translate(2px,-2px); } }
+        .peil-stempel:hover .peil-stempel__t1{ text-decoration:underline; text-underline-offset:2px; }
+        .peil-merk{ flex:none; display:inline-block; width:18px; height:18px; border-radius:50%; background:#800000; color:#fff; font:700 12px/18px system-ui, sans-serif; text-align:center; text-decoration:none; }
+        .peil-alinea{ position:relative; margin:12px 0 0; padding-left:26px; max-width:72ch; font-size:13px; line-height:1.6em; color:#555; }
+        .peil-alinea[hidden], #peilStempel[hidden]{ display:none; }
+        .peil-alinea .peil-merk{ position:absolute; left:0; top:3px; }
+        .peil-alinea strong{ color:#222; }
+        .peil-alinea a{ display:inline-block; padding:6px 0; color:#800000; text-decoration:underline; text-underline-offset:3px; }
     </style>
 </head>
 <body>
@@ -347,17 +367,16 @@
         </div>
 
         <div class="box box-info">
-            <strong>Nieuw sinds 2026 (LFI 2026, art. 788 III bis CGI):</strong><br>
-            De vrijstelling voor stiefkinderen (beaux-enfants) is verhoogd van €1.594 naar <strong>€15.932</strong>. Dit geldt bij overlijden, niet bij schenking.<br><br>
-            <strong>Voorwaarden:</strong>
+            <strong>Wat geldt er voor een stiefkind (art. 777 en 788 IV CGI):</strong><br>
+            Een stiefkind (beau-enfant) heeft fiscaal geen eigen vrijstelling en telt als niet-verwant. Bij overlijden is er <strong>€1.594</strong> aftrek per erfdeel (als geen andere aftrek geldt), bij schenking geen aftrek. Het tarief is vlak <strong>60%</strong>.<br><br>
+            <strong>Uitzondering (art. 786 CGI):</strong> is het stiefkind door u geadopteerd met een adoption simple, dan telt die adoptie in bepaalde gevallen toch mee en geldt de rechte lijn (barème 5 tot 45%, aftrek €100.000). Bijvoorbeeld:
             <ul style="margin:8px 0 0 20px;">
-                <li>De overledene was getrouwd of PACS met de ouder van het stiefkind</li>
-                <li>De overledene heeft het stiefkind aantoonbaar continu verzorgd ("secours et soins non interrompus")</li>
-                <li>Bij een minderjarig stiefkind op moment van overlijden: minstens 5 jaar verzorgd</li>
-                <li>Bij een meerderjarig stiefkind: minstens 5 jaar tijdens de minderjarigheid, of 10 jaar totaal</li>
+                <li>het geadopteerde kind is een kind uit een eerder huwelijk van uw echtgenoot (de adoptant)</li>
+                <li>een minderjarig geadopteerd kind dat minstens 5 jaar onafgebroken is verzorgd</li>
+                <li>een meerderjarig geadopteerd kind dat minstens 5 jaar als minderjarige of 10 jaar in totaal is verzorgd</li>
             </ul>
             <br>
-            <strong>Let op:</strong> het tarief van 60% boven de vrijstelling blijft ongewijzigd. De verhoging verzacht de pijn, maar bij substantiële nalatenschappen blijft het duur.
+            <strong>Let op:</strong> zonder zo'n adoptie blijft het 60% boven €1.594. Bij substantiële nalatenschappen blijft dat duur.
         </div>
 
         <p><strong>Veelgemaakte denkfout:</strong><br>
@@ -368,7 +387,7 @@
         <ul style="margin-left:20px;">
             <li>Adoptie simple — geeft toegang tot het barème in lijn directe (5-45%, abattement €100.000)</li>
             <li>Levensverzekering — valt buiten de nalatenschap (eigen fiscaal regime)</li>
-            <li>Schenking bij leven — combineer met de nieuwe vrijstelling</li>
+            <li>Schenking bij leven — let op: voor een stiefkind geldt bij schenking geen aftrek en 60%</li>
         </ul>
     </div>
 
@@ -459,9 +478,11 @@
 
         <div id="result-box">
             <div id="advice-content"></div>
+            <div id="peilStempel" hidden></div>
         </div>
     </div>
 
+    <p class="peil-alinea" id="peilVoet" hidden></p>
 </div>
 
 <script>
@@ -625,6 +646,43 @@
         box.style.display = 'block';
         setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 200);
     }
+
+    (function () {
+  // PEIL-BEGIN
+  // Peil: het parameterregister van Communities Abroad (privé). De waarden staan als kopie in peil/waarden.json; tests/peil.test.mjs bewaakt dat de tool daarmee overeenkomt.
+  // Bij elke controle alleen PEIL_STAND aanpassen (en peil/waarden.json).
+  const PEIL_STAND = "2026-10-20";
+  // Schakelaar voor het Peil-label (stempel en voettekstalinea). Zolang false toont de tool niets over Peil.
+  const PEIL_LABEL_AAN = true;
+  const PEIL_UITLEG_URL = "https://infofrankrijk.com/ons-manifest-hoe-wij-werken/";
+  const MAANDEN_NL = ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"];
+  const MAANDEN_KORT = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
+  function peilStandNl() {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(PEIL_STAND);
+    return m ? `${parseInt(m[3], 10)} ${MAANDEN_NL[parseInt(m[2], 10) - 1]} ${m[1]}` : PEIL_STAND;
+  }
+  function peilStandKort() {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(PEIL_STAND);
+    return m ? `${parseInt(m[3], 10)} ${MAANDEN_KORT[parseInt(m[2], 10) - 1]} ${m[1]}` : PEIL_STAND;
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  const PEIL_MERK = `<span class="peil-merk" aria-hidden="true">&#10003;</span>`;
+  // Compacte stempelknop: merkteken met dubbele ring en vinkje, twee korte regels, het geheel is één link naar het manifest.
+  function peilRegelHtml() {
+    if (!PEIL_LABEL_AAN) return "";
+    const aria = `Bedragen gecontroleerd tegen Peil, stand ${peilStandNl()}, lees hoe wij werken`;
+    return `<div class="peil-stempel-rij"><a class="peil-stempel" href="${PEIL_UITLEG_URL}" target="_blank" rel="noopener" aria-label="${escapeHtml(aria)}"><svg viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="18.5" fill="#fff" stroke="#800000" stroke-width="1.6"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#800000" stroke-width="1"/><path d="M13.5 20.5 L18 25 L26.5 15.5" fill="none" stroke="#800000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="peil-stempel__tk" aria-hidden="true"><span class="peil-stempel__t1">Gecontroleerd tegen Peil</span><span class="peil-stempel__t2">stand ${escapeHtml(peilStandKort())}<span class="peil-pijl" aria-hidden="true">&#8599;</span></span></span></a></div>`;
+  }
+  function peilVoetHtml() {
+    if (!PEIL_LABEL_AAN) return "";
+    return `${PEIL_MERK}<strong>Over de bedragen in deze tool.</strong> Alle wettelijke tarieven, bedragen en grenzen komen uit Peil, het register waarin wij deze gegevens bijhouden. Elk daarvan is gecontroleerd bij de officiële bron, de laatste controle was op ${escapeHtml(peilStandNl())}. Waar de tool met een aanname of schatting rekent, staat dat bij de uitkomst. <a href="${PEIL_UITLEG_URL}" target="_blank" rel="noopener">Lees in ons manifest hoe wij werken</a>`;
+  }
+  { const s = document.getElementById("peilStempel"); if (s) { s.innerHTML = peilRegelHtml(); s.hidden = !PEIL_LABEL_AAN; } }
+  { const v = document.getElementById("peilVoet"); if (v) { v.innerHTML = peilVoetHtml(); v.hidden = !PEIL_LABEL_AAN; } }
+  // PEIL-EINDE
+    })();
 </script>
 
 </body>
