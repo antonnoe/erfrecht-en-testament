@@ -10,6 +10,7 @@ const lees = (...p) => fs.readFileSync(path.join(here, "..", ...p), "utf8");
 const html = lees("index.html");
 const WAARDEN = JSON.parse(lees("peil", "waarden.json"));
 const UITLEG_URL = "https://infofrankrijk.com/ons-manifest-hoe-wij-werken/";
+const KAART_URL = "https://communitiesabroad.com/manifest/tool/erfrechtgids-frankrijk";
 const perId = new Map(WAARDEN.parameters.map((p) => [p.id, p]));
 
 // ---- Peil-blok uit de pagina laden
@@ -20,7 +21,7 @@ if (!blok) { console.log("FOUT Peil-blok (PEIL-BEGIN tot PEIL-EINDE) niet gevond
 function laad(code) {
   const ctx = { document: { getElementById: () => null }, console };
   vm.createContext(ctx);
-  vm.runInContext(code + "\n;globalThis.__p={PEIL_STAND,PEIL_LABEL_AAN,PEIL_UITLEG_URL,peilStandNl,peilStandKort,peilRegelHtml,peilVoetHtml};", ctx);
+  vm.runInContext(code + "\n;globalThis.__p={PEIL_STAND,PEIL_LABEL_AAN,PEIL_UITLEG_URL,PEIL_KAART_URL,peilStandNl,peilStandKort,peilRegelHtml,peilVoetHtml};", ctx);
   return ctx.__p;
 }
 const P = laad(blok[1]);
@@ -33,8 +34,8 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(P.PEIL_STAND)) fout("PEIL_STAND is geen datum al
 if (WAARDEN.stand !== P.PEIL_STAND) fout(`stand in peil/waarden.json is ${WAARDEN.stand}, maar PEIL_STAND is ${P.PEIL_STAND}.`);
 if (P.PEIL_STAND === "2026-10-20" && (nl !== "20 oktober 2026" || kort !== "20 okt 2026")) fout(`Datumopmaak klopt niet: '${nl}' en '${kort}'.`);
 const h = P.peilRegelHtml();
-if (!h.includes(`href="${UITLEG_URL}"`) || !h.includes('target="_blank"') || !h.includes('rel="noopener"')) fout("Stempel linkt niet naar het manifest met target _blank en rel noopener.");
-if (!h.includes(`aria-label="Bedragen gecontroleerd tegen Peil, stand ${nl}, lees hoe wij werken"`)) fout("Stempel mist de aria-label met volledige datum.");
+if (!h.includes(`href="${KAART_URL}"`) || !h.includes('target="_blank"') || !h.includes('rel="noopener"')) fout("Stempel linkt niet naar de toolkaart met target _blank en rel noopener.");
+if (!h.includes(`aria-label="Bedragen gecontroleerd tegen Peil, stand ${nl}, bekijk wat er gecontroleerd is"`)) fout("Stempel mist de aria-label met volledige datum.");
 if (!h.includes("Gecontroleerd tegen Peil</span>") || !h.includes(`stand ${kort}<span class="peil-pijl" aria-hidden="true">&#8599;</span></span>`)) fout("Stempel mist de twee korte regels met pijltje.");
 if ((h.match(/<a /g) || []).length !== 1 || !h.includes("<svg") || !h.includes('stroke="#800000"')) fout("Stempel moet één link met inline svg in #800000 zijn.");
 const v = P.peilVoetHtml();
