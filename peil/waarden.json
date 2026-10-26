@@ -1,8 +1,36 @@
 {
-  "stand": "2026-10-20",
-  "registerversie": "1.4.0",
+  "stand": "2026-10-26",
+  "registerversie": "1.12.0",
   "toelichting": "Kopie van de waarden uit Peil, het parameterregister van Communities Abroad. Wordt bijgewerkt door de Peil-agent; tests/peil.test.mjs vergelijkt de tool hiermee. Parameters met status te_verifieren hebben waarde null en worden niet vergeleken.",
   "parameters": [
+    {
+      "id": "p.fr.erf.erfdeel_langstlevende_echtgenoot",
+      "naam": "Wettelijk erfdeel langstlevende echtgenoot",
+      "waarde": {
+        "met_alleen_gemeenschappelijke_kinderen": "keuze: vruchtgebruik van alles of 1/4 volle eigendom",
+        "met_niet_gemeenschappelijk_kind": 0.25,
+        "zonder_kinderen_beide_ouders": 0.5,
+        "zonder_kinderen_een_ouder": 0.75,
+        "zonder_kinderen_en_ouders": 1
+      },
+      "waarde_weergave": "met kinderen: keuze vruchtgebruik van alles of een kwart in volle eigendom, bij een niet-gemeenschappelijk kind alleen een kwart; zonder kinderen de helft (beide ouders), driekwart (één ouder) of alles",
+      "bron_url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006431087",
+      "verificatiedatum": "2026-10-26"
+    },
+    {
+      "id": "p.fr.erf.woonrecht_langstlevende",
+      "naam": "Woonrecht langstlevende echtgenoot en PACS-partner",
+      "waarde": {
+        "tijdelijk_jaren": 1,
+        "tijdelijk_van_openbare_orde_echtgenoot": true,
+        "tijdelijk_van_openbare_orde_pacs": false,
+        "levenslang_echtgenoot": "recht van bewoning en gebruik tot overlijden, alleen uit te sluiten bij notarieel testament (art. 971)",
+        "pacs_partner": "alleen het tijdelijke recht van een jaar (515-6 lid 3), bij testament uit te sluiten"
+      },
+      "waarde_weergave": "een jaar gratis gebruik van de woning: voor de echtgenoot van openbare orde, voor de PACS-partner bij testament uit te sluiten; daarna levenslang woonrecht voor de echtgenoot, tenzij uitgesloten bij notarieel testament",
+      "bron_url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006431113",
+      "verificatiedatum": "2026-10-26"
+    },
     {
       "id": "p.fr.succ.abattement_niet_verwanten",
       "naam": "Vrijstelling en tarief niet-verwanten",
@@ -46,6 +74,17 @@
       "waarde_weergave": "60 % vlak, als niet-verwant (tenzij adoptie in de gevallen van 786)",
       "bron_url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000030061736",
       "verificatiedatum": "2026-10-19"
+    },
+    {
+      "id": "p.nl.erf.woonplaatsfictie_termijn",
+      "naam": "Termijn woonplaatsfictie erf- en schenkbelasting",
+      "waarde": {
+        "nederlander_jaren": 10,
+        "iedereen_schenking_jaren": 1
+      },
+      "waarde_weergave": "Een Nederlander wordt tot tien jaar na vertrek uit Nederland als inwoner behandeld bij overlijden en schenking; iedereen bij een schenking binnen een jaar na vertrek",
+      "bron_url": "https://wetten.overheid.nl/BWBR0002226/2026-01-01",
+      "verificatiedatum": "2026-10-26"
     }
   ]
 }
